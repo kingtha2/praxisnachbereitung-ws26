@@ -65,16 +65,16 @@ erDiagram
 Das ERD zeigt nur Entitäten, Attribute, Schlüssel und Kardinalitäten. Die folgenden Regeln gelten zusätzlich.
 
 | Nr. | Regel                                                                                                           | 
-|---|-----------------------------------------------------------------------------------------------------------------|
-| R2 | Zuweisungen desselben Geräts dürfen sich zeitlich nicht überschneiden.                                          | 
-| R3 | `returned_at` darf nicht vor `issued_at` liegen.                                                                |
-| R4 | `issued_at` darf nicht vor dem `purchase_date` des Geräts liegen.                                               | 
-| R5 | `issued_at`, `returned_at` und `purchase_date` dürfen nicht in der Zukunft liegen.                              | 
-| R7 | Zuweisungen werden nie gelöscht; eine Rückgabe wird nur durch Setzen von `returned_at` erfasst.                 |
-| R8 | `purchase_price_net` ist ≥ 0.                                                                                   | 
-| R9 | `retired_at` darf nicht vor `purchase_date` liegen.                                                             | 
-| R10 | Ein Gerät kann nur ausgemustert und eine Person nur deaktiviert werden, wenn keine aktive Zuweisung mehr besteht. |
-| R12 | Titel und akademische Grade stehen nur in `title`, nicht in `first_name` oder `last_name`.                      |
+|-----|-----------------------------------------------------------------------------------------------------------------|
+| R1  | Zuweisungen desselben Geräts dürfen sich zeitlich nicht überschneiden.                                          | 
+| R2  | `returned_at` darf nicht vor `issued_at` liegen.                                                                |
+| R3  | `issued_at` darf nicht vor dem `purchase_date` des Geräts liegen.                                               | 
+| R4  | `issued_at`, `returned_at` und `purchase_date` dürfen nicht in der Zukunft liegen.                              | 
+| R5  | Zuweisungen werden nie gelöscht; eine Rückgabe wird nur durch Setzen von `returned_at` erfasst.                 |
+| R6  | `purchase_price_net` ist ≥ 0.                                                                                   | 
+| R7  | `retired_at` darf nicht vor `purchase_date` liegen.                                                             | 
+| R8  | Ein Gerät kann nur ausgemustert und eine Person nur deaktiviert werden, wenn keine aktive Zuweisung mehr besteht. |
+| R9  | Titel und akademische Grade stehen nur in `title`, nicht in `first_name` oder `last_name`.                      |
 
 ## UK- und Constraint-Ideen
 
