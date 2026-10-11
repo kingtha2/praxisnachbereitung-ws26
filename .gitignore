@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# macOS
+.DS_Store
+
+# Starter-Projekt: .env enthaelt nur auskommentierte Beispielwerte und wird von docker-compose.yml eingebunden
+!minimal-starter-db-light-plus-mqtt/.env
