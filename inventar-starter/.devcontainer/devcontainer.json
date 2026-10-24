@@ -3,7 +3,7 @@
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "forwardPorts": [
     8000,
-    5432,
+    5434,
     1883,
     9001
   ],
