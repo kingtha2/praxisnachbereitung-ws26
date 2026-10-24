@@ -224,3 +224,4 @@ __marimo__/
 
 # Starter-Projekt: .env enthaelt nur auskommentierte Beispielwerte und wird von docker-compose.yml eingebunden
 !minimal-starter-db-light-plus-mqtt/.env
+!inventar-starter/.env
