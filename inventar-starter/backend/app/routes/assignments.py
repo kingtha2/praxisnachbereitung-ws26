@@ -3,6 +3,7 @@ from datetime import date
 from fastapi import APIRouter, HTTPException, status
 from psycopg import errors
 
+from .. import events
 from ..db import get_conn
 from ..models import AssignmentCreate, AssignmentReturn
 
@@ -79,7 +80,10 @@ def create_assignment(data: AssignmentCreate):
         except (errors.UniqueViolation, errors.ExclusionViolation):
             # gleichzeitige Ausleihe oder Überschneidung mit einer früheren Ausleihe (R1)
             raise HTTPException(status.HTTP_409_CONFLICT, "Ausleihe überschneidet sich mit einer bestehenden Ausleihe")
-        return _get_assignment(cur, cur.fetchone()["assignment_id"])
+        row = _get_assignment(cur, cur.fetchone()["assignment_id"])
+
+    events.publish(events.TOPIC_ASSIGNMENT_ISSUED, events.assignment_payload(row))
+    return row
 
 
 @router.post("/{assignment_id}/return")
@@ -106,4 +110,7 @@ def return_assignment(assignment_id: int, data: AssignmentReturn | None = None):
             "update assignment set returned_at = %s where assignment_id = %s and returned_at is null",
             (returned_at, assignment_id),
         )
-        return _get_assignment(cur, assignment_id)
+        row = _get_assignment(cur, assignment_id)
+
+    events.publish(events.TOPIC_ASSIGNMENT_RETURNED, events.assignment_payload(row))
+    return row
