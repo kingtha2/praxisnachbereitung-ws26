@@ -7,28 +7,200 @@
     <style>
       :root { font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Helvetica, Arial; }
       body { margin: 0; padding: 2rem; background: #f3f4f6; }
-      .card { max-width: 920px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.05); }
-      h1, h2 { margin-top: 0; }
-      code { background: #f6f8fa; padding: .15rem .35rem; border-radius: 4px; }
-      ul { padding-left: 1.2rem; }
-      .hint { color: #4b5563; }
-      .box { margin-top: 1.5rem; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; border-radius: 12px; background: #f9fafb; }
+      .card { max-width: 1100px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.05); }
+      h1 { margin-top: 0; }
+      h2 { margin: 2rem 0 .5rem; }
+      a { color: #2563eb; text-decoration: none; }
+      .box { margin-top: 1rem; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; border-radius: 12px; background: #f9fafb; }
+      form.grid { display: flex; flex-wrap: wrap; gap: .9rem; align-items: flex-end; }
+      label { display: flex; flex-direction: column; gap: .2rem; font-size: .9rem; }
+      input, select { padding: .35rem .55rem; border-radius: 8px; border: 1px solid #d1d5db; min-width: 150px; }
+      input.short { min-width: 0; width: 110px; }
+      button { padding: .45rem .9rem; border-radius: 999px; border: none; background: #2563eb; color: white; cursor: pointer; }
+      button:hover { background: #1d4ed8; }
+      button:disabled { background: #9ca3af; cursor: default; }
+      button.secondary { background: #059669; }
+      button.secondary:hover { background: #047857; }
+      table { border-collapse: collapse; width: 100%; margin-top: .75rem; }
+      th, td { border: 1px solid #e5e7eb; padding: .5rem .6rem; text-align: left; font-size: .9rem; }
+      th { background: #f9fafb; }
+      .badge { display: inline-block; padding: .1rem .55rem; border-radius: 999px; font-size: .8rem; font-weight: 600; }
+      .badge.frei { background: #dcfce7; color: #166534; }
+      .badge.ausgeliehen { background: #fef3c7; color: #92400e; }
+      .badge.ausgemustert { background: #e5e7eb; color: #374151; }
+      .muted { color: #6b7280; font-size: .9rem; }
+      #message { display: none; margin-top: 1rem; padding: .75rem 1rem; border-radius: 10px; }
+      #message.error { display: block; background: #fee2e2; color: #991b1b; }
+      #message.ok { display: block; background: #dcfce7; color: #166534; }
     </style>
   </head>
   <body>
     <div class="card">
-      <h1>Inventar Starter</h1>
-      <p class="hint">Diese Seite ist bewusst nur ein Platzhalter. Ihr ergänzt hier im Laufe der Übung eure Inventar-Oberfläche.</p>
+      <h1>📦 Inventar</h1>
+      <p class="muted"><a href="/">Startseite</a> · <a href="/docs">API-Doku</a></p>
+      <div id="message" role="status"></div>
 
+      <h2>Geräte</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Inventar-Nr.</th>
+            <th>Typ</th>
+            <th>Hersteller / Modell</th>
+            <th>Seriennummer</th>
+            <th>Standort</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in devices %}
+            <tr>
+              <td>{{ d.inventory_no }}</td>
+              <td>{{ d.device_type }}</td>
+              <td>{{ d.manufacturer }} {{ d.model }}</td>
+              <td>{{ d.serial_no or "–" }}</td>
+              <td>{{ d.location }}</td>
+              <td><span class="badge {{ d.status }}">{{ d.status }}</span></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="6"><em>Keine Geräte vorhanden.</em></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>Gerät hinzufügen</h2>
       <div class="box">
-        <h2>Nächste Schritte</h2>
-        <ul>
-          <li>Ergänzt euer Inventar-Schema in <code>db/init/010_inventory_schema.sql</code>.</li>
-          <li>Legt Endpunkte für <code>/devices</code> und <code>/assignments</code> an.</li>
-          <li>Baut hier eine einfache Übersicht für Geräte und Ausleihen.</li>
-          <li>Nutzt den <code>grades-starter</code> als Referenz für Formulare, Templates und CRUD-Muster.</li>
-        </ul>
+        <form class="grid" data-api="/devices" data-success="Gerät angelegt.">
+          <label>Inventar-Nr. <input class="short" name="inventory_no" required placeholder="G0007" /></label>
+          <label>Typ
+            <select name="device_type_id" required>
+              {% for t in device_types %}<option value="{{ t.device_type_id }}">{{ t.name }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>Hersteller <input name="manufacturer" required /></label>
+          <label>Modell <input name="model" required /></label>
+          <label>Seriennummer <input name="serial_no" placeholder="optional" /></label>
+          <label>Kaufdatum <input type="date" name="purchase_date" max="{{ today }}" value="{{ today }}" required /></label>
+          <label>Preis netto (€) <input class="short" type="number" name="purchase_price_net" min="0" step="0.01" required /></label>
+          <label>Standort
+            <select name="location_id" required>
+              {% for l in locations %}<option value="{{ l.location_id }}">{{ l.name }}</option>{% endfor %}
+            </select>
+          </label>
+          <button type="submit">Gerät speichern</button>
+        </form>
       </div>
+
+      <h2>Gerät ausgeben</h2>
+      <div class="box">
+        {% if not free_devices or not persons %}
+          <p class="muted">Zum Ausgeben braucht es mindestens ein freies Gerät und eine aktive Person.</p>
+        {% else %}
+          <form class="grid" data-api="/assignments" data-success="Gerät ausgegeben.">
+            <label>Gerät (nur freie)
+              <select name="device_id" required>
+                {% for d in free_devices %}
+                  <option value="{{ d.device_id }}">{{ d.inventory_no }} – {{ d.device_type }} {{ d.manufacturer }} {{ d.model }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Person
+              <select name="person_id" required>
+                {% for p in persons %}
+                  <option value="{{ p.person_id }}">{{ p.last_name }}, {{ p.first_name }} ({{ p.personnel_no }})</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Ausgabedatum <input type="date" name="issued_at" max="{{ today }}" value="{{ today }}" /></label>
+            <label>Notiz <input name="note" placeholder="optional" /></label>
+            <button type="submit">Ausgeben</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <h2>Aktive Ausleihen</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Gerät</th>
+            <th>Person</th>
+            <th>Ausgegeben am</th>
+            <th>Notiz</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in active_assignments %}
+            <tr>
+              <td>{{ a.inventory_no }} – {{ a.device_type }} {{ a.manufacturer }} {{ a.model }}</td>
+              <td>{{ a.last_name }}, {{ a.first_name }} ({{ a.personnel_no }})</td>
+              <td>{{ a.issued_at.strftime("%d.%m.%Y") }}</td>
+              <td>{{ a.note or "" }}</td>
+              <td><button class="secondary" data-return="{{ a.assignment_id }}">Zurückgeben</button></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="5"><em>Keine aktiven Ausleihen.</em></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+
+    <script>
+      // Die Formulare senden JSON an die API-Endpunkte, damit dieselben Domänenregeln greifen.
+      const message = document.getElementById("message");
+
+      function show(text, ok) {
+        message.textContent = text;
+        message.className = ok ? "ok" : "error";
+      }
+
+      async function callApi(url, body) {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: body === undefined ? undefined : JSON.stringify(body),
+        });
+        if (res.ok) return true;
+        const data = await res.json().catch(() => ({}));
+        const detail = Array.isArray(data.detail)
+          ? data.detail.map(e => `${e.loc.at(-1)}: ${e.msg}`).join("; ")
+          : data.detail || res.statusText;
+        show(`Fehler ${res.status}: ${detail}`, false);
+        return false;
+      }
+
+      // nach erfolgreicher Aktion neu laden und Meldung anzeigen
+      function reloadWith(text) {
+        sessionStorage.setItem("inventory-message", text);
+        location.reload();
+      }
+      const pending = sessionStorage.getItem("inventory-message");
+      if (pending) {
+        show(pending, true);
+        sessionStorage.removeItem("inventory-message");
+      }
+
+      document.querySelectorAll("form[data-api]").forEach(form => {
+        form.addEventListener("submit", async e => {
+          e.preventDefault();
+          const body = {};
+          for (const [key, value] of new FormData(form)) {
+            if (value !== "") body[key] = value;   // leere optionale Felder weglassen
+          }
+          const button = form.querySelector("button");
+          button.disabled = true;
+          if (await callApi(form.dataset.api, body)) reloadWith(form.dataset.success);
+          button.disabled = false;
+        });
+      });
+
+      document.querySelectorAll("button[data-return]").forEach(button => {
+        button.addEventListener("click", async () => {
+          button.disabled = true;
+          if (await callApi(`/assignments/${button.dataset.return}/return`)) reloadWith("Gerät zurückgegeben.");
+          button.disabled = false;
+        });
+      });
+    </script>
   </body>
 </html>
