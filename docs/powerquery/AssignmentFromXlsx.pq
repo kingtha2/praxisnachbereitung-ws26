@@ -29,6 +29,7 @@ let
             {"personnel_no", type text},
             {"last_name", type text},
             {"first_name", type text},
+            {"person_name", type text},
             {"department", type text},
             {"person_location", type text},
             {"note", type text},

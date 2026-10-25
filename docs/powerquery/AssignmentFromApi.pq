@@ -36,6 +36,7 @@ let
             {"personnel_no", type text},   // Text, damit führende Nullen erhalten bleiben
             {"last_name", type text},
             {"first_name", type text},
+            {"person_name", type text},
             {"department", type text},
             {"person_location", type text},
             {"note", type text},

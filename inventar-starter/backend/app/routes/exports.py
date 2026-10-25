@@ -25,6 +25,7 @@ ASSIGNMENT_EXPORT_SQL = """
            p.personnel_no,
            p.last_name,
            p.first_name,
+           p.last_name || ', ' || p.first_name as person_name,
            dep.name         as department,
            pl.name          as person_location,
            a.note,

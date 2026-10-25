@@ -19,10 +19,11 @@ Eine Zeile pro Ausleihe. Reihenfolge: erst die Ausleihe, dann das Gerät, dann d
 | 12 | `personnel_no` | person | fachlicher Schlüssel der Person |
 | 13 | `last_name` | person | |
 | 14 | `first_name` | person | |
-| 15 | `department` | department (über person) | Pivot je Abteilung |
-| 16 | `person_location` | location (über person) | Wo arbeitet die Person? |
-| 17 | `note` | assignment | Freitext zur Ausgabe |
-| 18 | `damage_note` | assignment (Migration aus Aufgabe A) | Schadensquote je Typ/Abteilung |
+| 15 | `person_name` | berechnet: „Nachname, Vorname“ | Pivot je Person (Aufgabe D) |
+| 16 | `department` | department (über person) | Pivot je Abteilung |
+| 17 | `person_location` | location (über person) | Wo arbeitet die Person? |
+| 18 | `note` | assignment | Freitext zur Ausgabe |
+| 19 | `damage_note` | assignment (Migration aus Aufgabe A) | Schadensquote je Typ/Abteilung |
 
 Bewusst nicht enthalten: technische IDs (`device_id`, `person_id`, …), Kaufpreis (gehört in eine
 Geräte- statt in eine Ausleihsicht), E-Mail (Datensparsamkeit).
