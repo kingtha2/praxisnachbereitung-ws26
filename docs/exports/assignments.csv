@@ -1,0 +1,7 @@
+﻿assignment_id;status;issued_at;returned_at;duration_days;inventory_no;device_type;manufacturer;model;serial_no;device_location;personnel_no;last_name;first_name;department;person_location;note;damage_note
+1;aktiv;2024-01-08;;1021;G0003;Monitor;Dell;P2723QE;DEL-P27-0003;Gebäude E;1001;Koch;Anna;IT;Gebäude E;;
+3;zurückgegeben;2024-03-05;2025-02-28;360;G0001;Laptop;Lenovo;ThinkPad T14;LNV-T14-0001;Gebäude E;1001;Koch;Anna;IT;Gebäude E;Rückgabe wegen Neugerät;
+4;aktiv;2024-10-01;;754;G0002;Laptop;Dell;Latitude 5440;DEL-5440-0002;Gebäude F;1002;König;Ben;Verwaltung;Gebäude F;Homeoffice;
+2;aktiv;2025-03-03;;601;G0001;Laptop;Lenovo;ThinkPad T14;LNV-T14-0001;Gebäude E;1005;Wagner;Eva;IT;Gebäude E;;
+6;zurückgegeben;2025-04-07;2025-09-30;176;G0005;Handscanner;Zebra;DS2208;ZEB-DS22-0005;Gebäude H;1003;Meier;Clara;Logistik;Gebäude H;;Gehäuse am Scanfenster gesprungen
+5;aktiv;2025-10-01;;389;G0005;Handscanner;Zebra;DS2208;ZEB-DS22-0005;Gebäude H;1004;Schulz;David;Logistik;Gebäude H;Schichtbetrieb;
