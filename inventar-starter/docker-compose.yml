@@ -40,3 +40,4 @@ services:
     volumes:
       - ./backend:/app/backend:rw
       - ./.env:/app/.env:ro
+      - ./alembic.ini:/app/alembic.ini:ro
